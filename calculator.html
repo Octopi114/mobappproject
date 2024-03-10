@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+
+  <!-- Bootstrap JavaScript (optional) -->
+  <!-- Required dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="p-1 text-light" style="background-color: #eeeeee;">
+          <div class="userData p-2" style="font-size: 18px;">
+            <div class="card col-4 mx-auto">
+              <div class="card">
+
+                <input type="text" class="calculator-screen z-depth-1" id="display" disabled />
+
+                <div class=" calculator-keys">
+
+                  <button type="button" class="operator btn btn-info" onclick="appendValue('+')">+</button>
+                  <button type="button" class="operator btn btn-info" onclick="appendValue('-')">-</button>
+                  <button type="button" class="operator btn btn-info" onclick="appendValue('*')">&times;</button>
+                  <button type="button" class="operator btn btn-info" onclick="appendValue('/')">&divide;</button>
+
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('7')">7</button>
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('8')">8</button>
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('9')">9</button>
+
+
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('4')">4</button>
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('5')">5</button>
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('6')">6</button>
+
+
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('1')">1</button>
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('2')">2</button>
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('3')">3</button>
+
+
+                  <button type="button" class="btn btn-light waves-effect" onclick="appendValue('0')">0</button>
+                  <button type="button" class="decimal function btn btn-secondary" onclick="appendValue('.')">.</button>
+                  <button type="button" class="all-clear function btn btn-danger btn-sm"
+                    onclick="clearDisplay()">AC</button>
+
+                  <button type=" button" class="equal-sign operator btn btn-success"
+                    onclick="calculateResult()">=</button>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <nav class="navbar fixed-bottom navbar-light bg-light container" style="background-color: #e3f2fd;">
+          <a href="index.html"><i class="bi bi-house h1" style="color: black;"></i></a>
+          <a href="TipsCalculator.html"><i class="bi bi-cash h1" style="color: black;"></i></a>
+          <a href="dice.html"><i class="bi bi-dice-3 h1" style="color: black;"></i></a>
+          <a href="calculator.html"><i class="bi bi-calculator h1" style="color: black;"></i></a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    // symbols which calculator has
+    const symbols = ["+", "-", "/", "*"];
+
+    // function gets value/symbol and set in to the input field
+    function appendValue(value) {
+      // get whole equeasion from input field
+      var equasion = document.getElementById('display').value.toLowerCase()
+
+      // call function to check if input field is 'dirty'
+      // assigne equesion variable to result of the func
+      equasion = dirtyInputCheck(equasion);
+
+      // get last character
+      var lastValue = equasion.slice(-1);
+
+      // if the current and the last character were symbols
+      if (symbols.includes(lastValue) && symbols.includes(value)) {
+        // cut last character
+        equasion = equasion.slice(0, -1);
+      }
+
+      // set new value/symbol
+      equasion += value;
+
+      // update input field with a new value/symbol
+      document.getElementById('display').value = equasion;
+    }
+
+    // the functinon checks whether input field contains erorr string elements
+    // the function returns clean input field
+    function dirtyInputCheck(input) {
+      // the statement below checks if the previus result was 'infinity',
+      // and if it was - clears it from the input
+      // equastion 2/0 = infinitu; 
+      if (input.includes('infinity')) {
+        input = input.replace('infinity', '');
+      }
+      // the same check for 'nan' result
+      // 0/0 = nan
+      else if (input.includes('nan')) {
+        input = input.replace('nan', '');
+      }
+      // the same check for 'nan' result
+      // emply imput - undefined
+      else if (input.includes('undefined')) {
+        input = input.replace('undefined', '');
+      }
+
+      return input;
+    }
+
+
+    // function sets the input field to an empty string
+    function clearDisplay() {
+      document.getElementById('display').value = '';
+    }
+
+    // function calculates the equasion from the imput field
+    function calculateResult() {
+      // try-catch catches any wrong input (ex: text instead of a number, empty string, so on)
+      // if input is wrong - catch block displays error message alert
+      try {
+        // function eval takes string value which contains maths equasion and calculates it
+        document.getElementById('display').value = eval(document.getElementById('display').value);
+      } catch (error) {
+        alert("Invalid input:" + error.message);
+      }
+    }
+
+
+  </script>
+</body>
+
+</html>
